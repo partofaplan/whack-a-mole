@@ -3,17 +3,23 @@
   const $ = id => document.getElementById(id);
   const ROUND = 30;
 
-  // Difficulty settings: interval = spawn gap (ms), visible = time mole stays up (ms), perSpawn = moles per wave
+  // Difficulty settings: interval = spawn gap (ms), visible = time mole stays up (ms, minimum enforced below), perSpawn = moles per wave
   const DIFFICULTIES = {
     easy:   { interval: 1500, visible: 1200, perSpawn: 1 },
     medium: { interval: 900,  visible: 800,  perSpawn: 1 },
-    hard:   { interval: 500,  visible: 400,  perSpawn: 2 },
+    hard:   { interval: 500,  visible: 600,  perSpawn: 2 },  // visible floored at 350ms after ramp
   };
+  // Minimum time a mole stays visible (ensures it's hittable even late in a hard round)
+  const MIN_VISIBLE_MS = 350;
   let difficulty = 'medium';
 
-  let score = 0, best = 0, running = false, endAt = 0, spawnTimer, clockTimer, streak = 0, lastHit = 0;
+  let score = 0, running = false, endAt = 0, spawnTimer, clockTimer, streak = 0, lastHit = 0;
   let sound = false, audioContext;
-  try { best = Number(localStorage.getItem('mole-meadow-best')) || 0; } catch {}
+  // Personal best tracked separately per difficulty
+  function bestKey(d) { return `mole-meadow-best-${d}`; }
+  function loadBest(d) { try { return Number(localStorage.getItem(bestKey(d))) || 0; } catch { return 0; } }
+  function saveBest(d, val) { try { localStorage.setItem(bestKey(d), String(val)); } catch {} }
+  let best = loadBest(difficulty);
   const format = n => String(n).padStart(3, '0');
   $('best').textContent = format(best);
   const moleSVG = `<svg class="mole" viewBox="0 0 100 120" aria-hidden="true"><defs><radialGradient id="fur"><stop stop-color="#b19473"/><stop offset="1" stop-color="#806348"/></radialGradient></defs><ellipse cx="24" cy="33" rx="12" ry="14" fill="#806348"/><ellipse cx="76" cy="33" rx="12" ry="14" fill="#806348"/><ellipse cx="24" cy="34" rx="6" ry="8" fill="#c79584"/><ellipse cx="76" cy="34" rx="6" ry="8" fill="#c79584"/><path d="M17 115V62Q14 24 43 20L39 13 49 18 53 9 58 20Q86 23 84 62V115" fill="url(#fur)"/><ellipse cx="50" cy="88" rx="25" ry="30" fill="#c1a583"/><ellipse cx="36" cy="48" rx="4.6" ry="6" fill="#302a24"/><ellipse cx="65" cy="48" rx="4.6" ry="6" fill="#302a24"/><circle cx="37" cy="46" r="1.5" fill="white"/><circle cx="66" cy="46" r="1.5" fill="white"/><ellipse cx="30" cy="62" rx="8" ry="5" fill="#c68b79" opacity=".7"/><ellipse cx="72" cy="62" rx="8" ry="5" fill="#c68b79" opacity=".7"/><ellipse cx="50" cy="60" rx="15" ry="10" fill="#d6bca0"/><ellipse cx="50" cy="56" rx="7" ry="5" fill="#5c4036"/><path d="M50 61v5m-7-2q7 9 14 0" fill="none" stroke="#664638" stroke-width="2" stroke-linecap="round"/><ellipse cx="20" cy="91" rx="12" ry="7" fill="#b29372"/><ellipse cx="80" cy="91" rx="12" ry="7" fill="#b29372"/></svg>`;
@@ -60,7 +66,7 @@
     const cfg = DIFFICULTIES[difficulty];
     // Speed ramps up 30% over the course of the round
     const speedFactor = 1 - (elapsed / ROUND) * 0.3;
-    const visibleMs = cfg.visible * speedFactor;
+    const visibleMs = Math.max(MIN_VISIBLE_MS, cfg.visible * speedFactor);
     const intervalMs = cfg.interval * speedFactor;
     const available = holes.filter(h => !h.classList.contains('up'));
     const count = Math.min(cfg.perSpawn, available.length);
@@ -79,6 +85,8 @@
   function setDifficulty(d) {
     if (running) return;
     difficulty = d;
+    best = loadBest(d);
+    $('best').textContent = format(best);
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
       const active = btn.dataset.difficulty === d;
       btn.setAttribute('aria-pressed', String(active));
@@ -90,7 +98,7 @@
     document.querySelectorAll('.difficulty-btn').forEach(btn => { btn.disabled = false; });
     $('time').textContent = '0'; $('restart').disabled = true;
     const newBest = score > best;
-    if (newBest) { best = score; try { localStorage.setItem('mole-meadow-best', String(best)); } catch {} }
+    if (newBest) { best = score; saveBest(difficulty, best); }
     const diffLabel = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
     $('best').textContent = format(best);
     $('overlay-label').textContent = newBest ? 'A NEW PERSONAL BEST' : 'THAT\u2019S A WRAP';
