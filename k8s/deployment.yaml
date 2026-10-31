@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: whack-a-mole
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whack-a-mole
+  namespace: whack-a-mole
+  labels:
+    app: whack-a-mole
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whack-a-mole
+  template:
+    metadata:
+      labels:
+        app: whack-a-mole
+    spec:
+      containers:
+        - name: whack-a-mole
+          image: whack-a-mole:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whack-a-mole
+  namespace: whack-a-mole
+  labels:
+    app: whack-a-mole
+spec:
+  type: ClusterIP
+  selector:
+    app: whack-a-mole
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
