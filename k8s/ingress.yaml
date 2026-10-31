@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: whack-a-mole
+  name: whackamole
   namespace: whack-a-mole
   labels:
     app: whack-a-mole
@@ -16,4 +16,4 @@ spec:
         name: http
   tls:
     - hosts:
-        - whack-a-mole
+        - whackamole

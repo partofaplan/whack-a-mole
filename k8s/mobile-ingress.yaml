@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whackamolemobile
+  namespace: whack-a-mole
+  labels:
+    app: whackamole-mobile
+  annotations:
+    tailscale.com/funnel: "false"
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: whackamole-mobile
+      port:
+        name: http
+  tls:
+    - hosts:
+        - whackamolemobile

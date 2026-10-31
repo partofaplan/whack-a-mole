@@ -1,0 +1,3 @@
+FROM nginx:alpine
+COPY mobile/index.html mobile/style.css mobile/game.js /usr/share/nginx/html/
+EXPOSE 80

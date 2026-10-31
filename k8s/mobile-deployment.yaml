@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whackamole-mobile
+  namespace: whack-a-mole
+  labels:
+    app: whackamole-mobile
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: whackamole-mobile
+  template:
+    metadata:
+      labels:
+        app: whackamole-mobile
+    spec:
+      containers:
+        - name: whackamole-mobile
+          image: whackamole-mobile:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whackamole-mobile
+  namespace: whack-a-mole
+  labels:
+    app: whackamole-mobile
+spec:
+  type: ClusterIP
+  selector:
+    app: whackamole-mobile
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
