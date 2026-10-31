@@ -1,0 +1,110 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": 1,
+      "severity": "HIGH",
+      "title": "Auth.init() call site contradicts its own DOMContentLoaded documentation",
+      "location": "Design § 'Changes to game.js' — Auth.init() placement",
+      "summary": "The design says init() is 'called once on DOMContentLoaded' but places the call bare at the bottom of the game.js IIFE (which runs synchronously at end of <body>). Self-contradictory; will confuse the implementation agent into wrapping the call incorrectly."
+    },
+    {
+      "id": 2,
+      "severity": "HIGH",
+      "title": "Dockerfile.api missing build dependencies for better-sqlite3 native addon",
+      "location": "Design § 'Dockerfile.api' — deps stage",
+      "summary": "node:20-alpine does not ship python3, make, or g++. npm ci will fail when node-gyp tries to compile better-sqlite3. Fix: add 'apk add --no-cache python3 make g++' before npm ci in the deps stage."
+    },
+    {
+      "id": 3,
+      "severity": "HIGH",
+      "title": "renderLeaderboard() called by bare name inside game.js IIFE but is defined in auth.js — name not in scope",
+      "location": "Design § 'Changes to game.js' — injected snippet in finish()",
+      "summary": "The snippet calls bare renderLeaderboard(...) but that function lives in auth.js outside the IIFE. Must be window.Auth.renderLeaderboard(...). The function is also missing from the window.Auth return statement."
+    },
+    {
+      "id": 4,
+      "severity": "HIGH",
+      "title": "mobile/auth.js copy never created — Dockerfile.mobile references a file that does not exist",
+      "location": "Design § 'Dockerfile updates' — Dockerfile.mobile; also Deployment Order (13 steps)",
+      "summary": "Dockerfile.mobile COPYs mobile/auth.js but that file does not exist in the repo and the deployment order never creates it. Docker build for mobile will fail."
+    },
+    {
+      "id": 5,
+      "severity": "MEDIUM",
+      "title": "SQLite window function compatibility not confirmed (ROW_NUMBER() OVER)",
+      "location": "Design § 'leaderboard.js' — SQL query",
+      "summary": "ROW_NUMBER() requires SQLite ≥ 3.25.0. better-sqlite3 9.4.3 bundles 3.45.x so this is fine, but the design does not state this — add a one-line confirmation."
+    },
+    {
+      "id": 6,
+      "severity": "MEDIUM",
+      "title": "Design does not explicitly confirm score/difficulty variable scope for the injected finish() hook",
+      "location": "Design § 'Changes to game.js (desktop) and mobile/game.js (mobile)'",
+      "summary": "Both IIFEs do expose score and difficulty in finish() scope (verified). The design should state this explicitly to prevent the implementation agent from adding unnecessary global variables."
+    },
+    {
+      "id": 7,
+      "severity": "MEDIUM",
+      "title": "JWT_SECRET missing-at-startup is not actually fatal — pod passes health probes without JWT_SECRET",
+      "location": "Design § Error Handling Matrix — 'JWT sign — Missing JWT_SECRET'",
+      "summary": "jwt.sign() throws at call time, not startup. The pod starts, passes /health probes, and only fails on first login. Fix: add an explicit startup guard in server.js that calls process.exit(1) if JWT_SECRET is unset."
+    },
+    {
+      "id": 8,
+      "severity": "MEDIUM",
+      "title": "<dialog> / showModal() not supported on iOS < 15.4 — no fallback specified",
+      "location": "Design § 'Auth modal'",
+      "summary": "The design uses native <dialog> without a compatibility statement or fallback. iOS 14 and iOS 15.0–15.3 will get a broken modal. Specify minimum browser targets or use a div-based overlay."
+    },
+    {
+      "id": 9,
+      "severity": "MEDIUM",
+      "title": "Leaderboard button injection into .game-footer has unspecified layout impact",
+      "location": "Design § 'Leaderboard panel' — button placement",
+      "summary": ".game-footer uses justify-content:space-between with two children. A third injected button disrupts the layout. The design does not specify the required CSS change (e.g., a wrapper div for right-side buttons)."
+    },
+    {
+      "id": 10,
+      "severity": "MEDIUM",
+      "title": "bcryptjs.hashSync cost 12 blocks the event loop ~200–400 ms, risking liveness probe failures under concurrent registrations",
+      "location": "Design § 'auth.js — registration' — bcrypt cost choice",
+      "summary": "Synchronous bcrypt at cost 12 on a single Node.js thread blocks the event loop. With periodSeconds:10 probes and no explicit failureThreshold, concurrent registrations can cause probe misses. Lower to cost 10 (NFR-1 minimum) or document the risk and add failureThreshold:3 to the probe spec."
+    },
+    {
+      "id": 11,
+      "severity": "NIT",
+      "title": "express 4.18.3 has a patched open-redirect CVE — use 4.19.2+",
+      "location": "Design § 'package.json'",
+      "summary": "CVE-2024-29041 is fixed in Express 4.19.x. Pin to 4.19.2 or the latest 4.x patch."
+    },
+    {
+      "id": 12,
+      "severity": "NIT",
+      "title": "Auth.logout() exposed as clearSession() alias — does not update the UI",
+      "location": "Design § 'auth.js' — return statement",
+      "summary": "logout: clearSession clears localStorage but leaves the username in the header until page reload. Wrap it: function logout() { clearSession(); renderAuthHeader(); }"
+    },
+    {
+      "id": 13,
+      "severity": "NIT",
+      "title": "Directory layout does not note that api-deployment.yaml contains the Service as a multi-doc YAML",
+      "location": "Design § 'Directory layout' and § 'Kubernetes Manifests'",
+      "summary": "The Service is embedded in api-deployment.yaml (---separated). Clarify in the directory layout comment."
+    },
+    {
+      "id": 14,
+      "severity": "NIT",
+      "title": "Leaderboard timestamp uses MIN(created_at) — shows first submission date, not date best score was set",
+      "location": "Design § 'leaderboard.js' — SQL query",
+      "summary": "MIN(created_at) shows when the user first played, not when they achieved their best score. Use MAX(created_at) or a correlated subquery, or document the choice explicitly."
+    },
+    {
+      "id": 15,
+      "severity": "NIT",
+      "title": "Auth.init() is not stated to be idempotent — could double-inject on unexpected re-call",
+      "location": "Design § 'auth.js' — init() description",
+      "summary": "Add a guard as the first line of init(): if (document.getElementById('auth-modal-root')) return;"
+    }
+  ]
+}
