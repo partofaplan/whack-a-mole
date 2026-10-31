@@ -22,7 +22,48 @@
   let best = loadBest(difficulty);
   const format = n => String(n).padStart(3, '0');
   $('best').textContent = format(best);
-  const moleSVG = `<svg class="mole" viewBox="0 0 100 120" aria-hidden="true"><defs><radialGradient id="fur"><stop stop-color="#b19473"/><stop offset="1" stop-color="#806348"/></radialGradient></defs><ellipse cx="24" cy="33" rx="12" ry="14" fill="#806348"/><ellipse cx="76" cy="33" rx="12" ry="14" fill="#806348"/><ellipse cx="24" cy="34" rx="6" ry="8" fill="#c79584"/><ellipse cx="76" cy="34" rx="6" ry="8" fill="#c79584"/><path d="M17 115V62Q14 24 43 20L39 13 49 18 53 9 58 20Q86 23 84 62V115" fill="url(#fur)"/><ellipse cx="50" cy="88" rx="25" ry="30" fill="#c1a583"/><ellipse cx="36" cy="48" rx="4.6" ry="6" fill="#302a24"/><ellipse cx="65" cy="48" rx="4.6" ry="6" fill="#302a24"/><circle cx="37" cy="46" r="1.5" fill="white"/><circle cx="66" cy="46" r="1.5" fill="white"/><ellipse cx="30" cy="62" rx="8" ry="5" fill="#c68b79" opacity=".7"/><ellipse cx="72" cy="62" rx="8" ry="5" fill="#c68b79" opacity=".7"/><ellipse cx="50" cy="60" rx="15" ry="10" fill="#d6bca0"/><ellipse cx="50" cy="56" rx="7" ry="5" fill="#5c4036"/><path d="M50 61v5m-7-2q7 9 14 0" fill="none" stroke="#664638" stroke-width="2" stroke-linecap="round"/><ellipse cx="20" cy="91" rx="12" ry="7" fill="#b29372"/><ellipse cx="80" cy="91" rx="12" ry="7" fill="#b29372"/></svg>`;
+  const moleSVG = `<svg class="mole" viewBox="0 0 100 120" aria-hidden="true">
+    <defs>
+      <radialGradient id="fur" cx="48%" cy="72%" rx="62%" ry="78%">
+        <stop stop-color="#806047"/>
+        <stop offset=".46" stop-color="#6b4226"/>
+        <stop offset=".8" stop-color="#3d2b1f"/>
+        <stop offset="1" stop-color="#252321"/>
+      </radialGradient>
+    </defs>
+    <path d="M18 118C15 102 13 84 17 65C19 54 23 45 26 35C29 20 39 14 50 14C63 14 73 24 75 37C78 49 84 60 85 76C88 94 83 108 82 118Z" fill="url(#fur)"/>
+    <ellipse cx="50" cy="82" rx="28" ry="35" fill="#8b6a50" opacity=".18"/>
+    <path d="M48 62C38 66 31 82 32 99L34 119H67C71 103 69 83 61 70C57 64 53 61 48 62Z" fill="#b38c6b" opacity=".65"/>
+    <path d="M49 70C39 79 38 99 41 118H60C64 103 61 84 55 74Z" fill="#d4a88a" opacity=".5"/>
+    <path d="M27 40C21 36 22 30 26 29C30 28 33 34 32 38M69 38C68 33 71 29 74 31C78 34 76 39 73 42" fill="#493326"/>
+    <path d="M27 37Q24 32 27 32Q30 33 29 38M72 38Q71 33 73 34L74 37" fill="#c47a6e" opacity=".65"/>
+    <path d="M25 49C24 30 35 18 49 18C64 17 75 32 76 49C71 62 62 67 50 67C37 66 28 59 25 49Z" fill="url(#fur)"/>
+    <path d="M31 40Q35 35 41 40M60 40Q65 36 70 42" fill="none" stroke="#292420" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="36" cy="43" r="1.8" fill="#141311"/>
+    <circle cx="65" cy="43" r="1.7" fill="#141311"/>
+    <circle cx="35.6" cy="42.6" r=".45" fill="#b1a18d" opacity=".65"/>
+    <circle cx="64.6" cy="42.6" r=".4" fill="#b1a18d" opacity=".55"/>
+    <path d="M39 49C42 44 55 43 60 49C63 54 59 63 55 70C53 74 48 74 45 70C41 63 36 55 39 49Z" fill="#a77860"/>
+    <path d="M41 49C45 46 53 46 57 50C59 55 54 64 52 69C51 71 48 70 47 68C44 62 39 54 41 49Z" fill="#d4a88a"/>
+    <path d="M44 50Q48 47 52 50L50 64Q46 59 44 50Z" fill="#ead0b5" opacity=".55"/>
+    <path d="M44 67C45 63 54 63 57 67C59 71 55 75 51 75C47 75 42 72 44 67Z" fill="#c47a6e"/>
+    <path d="M46 67Q50 65 54 68" fill="none" stroke="#e6b1a2" stroke-width="1.5" stroke-linecap="round"/>
+    <ellipse cx="46.5" cy="70" rx="1.2" ry=".85" fill="#78483f"/>
+    <ellipse cx="54" cy="70" rx="1.2" ry=".85" fill="#78483f"/>
+    <g fill="none" stroke="#b3977c" stroke-width=".6" stroke-linecap="round" opacity=".55">
+      <path d="M40 58L26 54M40 61L23 61M41 64L28 68M60 58L74 54M59 61L77 62M58 64L71 69"/>
+    </g>
+    <g fill="none" stroke="#b28c66" stroke-width=".8" stroke-linecap="round" opacity=".3">
+      <path d="M33 29L36 25M39 25L41 22M47 23L48 19M55 24L54 20M62 29L60 25M28 48L30 52M30 57L33 60M69 52L71 48M66 59L69 56M23 70L25 76M21 81L23 87M26 92L28 97M75 72L73 78M79 84L77 90M72 96L70 101M38 78L37 84M60 80L62 87M40 95L41 102M57 105L56 112"/>
+    </g>
+    <path d="M24 79C17 80 13 85 12 91L26 99L34 90Z M76 79C83 80 87 85 88 91L74 99L66 90Z" fill="url(#fur)"/>
+    <path d="M23 86C19 85 12 87 9 91C6 95 8 99 12 101C18 104 27 103 31 99C35 95 30 90 23 86Z M77 86C81 85 88 87 91 91C94 95 92 99 88 101C82 104 73 103 69 99C65 95 70 90 77 86Z" fill="#b5876e"/>
+    <path d="M12 91Q19 87 26 93L29 97Q19 100 11 96Z M88 91Q81 87 74 93L71 97Q81 100 89 96Z" fill="#d4a88a"/>
+    <g fill="none" stroke="#edd7bc" stroke-width="2" stroke-linecap="round">
+      <path d="M11 96L8 100M16 98L14 103M22 99L21 104M27 98L28 102M89 96L92 100M84 98L86 103M78 99L79 104M73 98L72 102"/>
+    </g>
+    <path d="M13 91L16 94M19 90L21 94M87 91L84 94M81 90L79 94" fill="none" stroke="#986c58" stroke-width=".8" stroke-linecap="round"/>
+  </svg>`;
   const holes = Array.from({ length: 9 }, (_, index) => {
     const button = document.createElement('button');
     button.className = 'hole'; button.innerHTML = moleSVG;
