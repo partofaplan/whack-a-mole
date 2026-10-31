@@ -43,5 +43,5 @@ main{max-width:none;margin:0;padding:0}
 .difficulty-btn{flex:1;min-width:44px;min-height:48px;padding:10px 8px;font-size:10px;letter-spacing:1px}
 .play-button{min-height:52px;min-width:200px;font-size:15px;margin:12px 0 20px}
 .overlay-note{font-size:6px;line-height:1.6;max-width:100%}
-.game-footer,footer{display:none}
+footer{display:none}.game-footer .key{display:none}.game-footer{padding:10px 12px}.game-footer button{font-size:12px;padding:8px 14px;border:1px solid #d8decd;border-radius:20px}
 @media(max-height:500px){.overlay{padding:8px}.welcome-mark,.overlay-note{display:none}.overlay h2{font-size:24px;margin:6px 0}.overlay p{margin:4px 0}.difficulty{margin:4px 0}.play-button{margin:6px 0}}
