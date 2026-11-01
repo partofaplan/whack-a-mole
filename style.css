@@ -90,3 +90,41 @@ footer>span:last-child{font-size:8px;letter-spacing:1.3px}
 .difficulty-btn[aria-pressed="true"]{transform:translateY(2px);box-shadow:none;outline:3px solid var(--ink);outline-offset:2px}
 .difficulty-btn[aria-pressed="true"]:hover{transform:translateY(2px);filter:none}
 .difficulty-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+/* ── Auth + Leaderboard styles ──────────────────────────────────────── */
+.auth-btn{border:2px solid var(--lime);background:transparent;border-radius:30px;padding:8px 16px;color:var(--ink);font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:background .15s}
+.auth-btn:hover{background:#f0fdf4}
+.auth-header-group{display:flex;align-items:center;gap:8px}
+.auth-username{font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--ink)}
+/* Modal backdrop */
+.auth-modal-backdrop{position:fixed;inset:0;background:rgba(26,31,54,.55);z-index:100;display:flex;align-items:center;justify-content:center}
+.auth-modal-backdrop.hidden{display:none}
+/* Modal card */
+.auth-modal{background:#fff;border:3px solid var(--lime);border-radius:24px;padding:28px;box-shadow:0 8px 0 #1a9e2e,0 12px 24px rgba(0,0,0,.2);max-width:360px;width:90%;position:relative;display:flex;flex-direction:column;gap:8px}
+.auth-modal h2{font-family:'Fredoka One',cursive;font-size:28px;margin:0 0 4px;color:var(--ink)}
+.auth-modal label{font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.auth-modal input{border:2px solid #d1d5db;border-radius:12px;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .15s}
+.auth-modal input:focus{border-color:var(--lime)}
+.auth-error{font-family:'Nunito',sans-serif;font-size:12px;color:#c0392b;min-height:18px;margin:0}
+.auth-close-btn{position:absolute;top:12px;right:14px;border:0;background:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1}
+.auth-close-btn:hover{color:var(--ink)}
+.auth-toggle-btn{border:0;background:none;font-family:'Nunito',sans-serif;font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;align-self:center;margin-top:4px}
+/* Leaderboard panel */
+#leaderboard-panel{border:3px solid var(--lime);border-radius:24px;background:#fff;padding:20px;box-shadow:0 8px 0 #1a9e2e,0 12px 24px rgba(0,0,0,.1);margin-top:16px}
+#leaderboard-panel[hidden]{display:none}
+.lb-title{font-family:'Fredoka One',cursive;font-size:24px;margin:0 0 12px;color:var(--ink)}
+.lb-filters{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.lb-filter-btn{border:2px solid var(--lime);background:transparent;border-radius:30px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s}
+.lb-filter-btn--active{background:var(--lime);color:#fff}
+.lb-filter-btn:hover{background:#f0fdf4}
+.lb-filter-btn--active:hover{background:var(--lime)}
+.lb-status{font-family:'Nunito',sans-serif;font-size:12px;color:var(--muted);margin:8px 0}
+.lb-table{width:100%;border-collapse:collapse;font-family:'Nunito',sans-serif;font-size:13px}
+.lb-table th{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:6px 8px;text-align:left;border-bottom:2px solid #e8eadf}
+.lb-table td{padding:7px 8px;border-bottom:1px solid #f0f0ea}
+.lb-table tr:nth-child(even) td{background:#f0fdf4}
+.lb-diff{text-transform:capitalize;font-weight:700;font-size:11px}
+.lb-diff--easy{color:#1a9e2e}.lb-diff--medium{color:#d4501a}.lb-diff--hard{color:#c0392b}
+.game-footer-right{display:flex;gap:8px;align-items:center}
+#leaderboard-btn{border:2px solid var(--lime);background:transparent;border-radius:20px;padding:6px 12px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:700;color:var(--ink);cursor:pointer}
+#leaderboard-btn:hover{background:#f0fdf4}

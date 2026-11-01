@@ -152,6 +152,9 @@
     $('play').innerHTML = 'Play again <span>\u2197</span>'; $('overlay').hidden = false;
     $('status').textContent = `Round over. Your score is ${score}. Personal best ${best}.`;
     $('play').focus(); tone(320, .3);
+    // Submit score and refresh leaderboard
+    if (window.Auth && window.Auth.isLoggedIn()) { window.Auth.submitScore(score, difficulty); }
+    if (window.Auth) { window.Auth.fetchLeaderboard(window.Auth._currentFilter).then(d => { if (d && d.ok) window.Auth.renderLeaderboard(d.leaderboard); }); }
   }
   function start() {
     clearTimeout(spawnTimer); clearInterval(clockTimer); holes.forEach(hide);
@@ -183,4 +186,5 @@
     $('sound').setAttribute('aria-pressed', String(sound)); $('sound').setAttribute('aria-label', `Turn sound ${sound ? 'off' : 'on'}`);
     $('sound').querySelector('span').textContent = `Sound ${sound ? 'on' : 'off'}`; tone(600);
   });
+  if (window.Auth) window.Auth.init();
 })();

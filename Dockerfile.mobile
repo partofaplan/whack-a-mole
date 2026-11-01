@@ -1,3 +1,4 @@
 FROM nginx:alpine
+COPY auth.js /usr/share/nginx/html/auth.js
 COPY mobile/index.html mobile/style.css mobile/game.js /usr/share/nginx/html/
 EXPOSE 80
