@@ -101,7 +101,8 @@ window.Auth = (() => {
         const group = document.createElement('div');
         group.id = 'auth-header-group';
         group.className = 'auth-header-group';
-        group.innerHTML = `<span class="auth-username">\uD83D\uDC4B ${username}</span><button id="auth-logout-btn" class="auth-btn">Log out</button>`;
+        group.innerHTML = `<span class="auth-username"></span><button id="auth-logout-btn" class="auth-btn">Log out</button>`;
+        group.querySelector('.auth-username').textContent = `👋 ${username}`;
         sound.parentNode.insertBefore(group, sound);
         document.getElementById('auth-logout-btn').addEventListener('click', logout);
       } else {
@@ -319,6 +320,7 @@ window.Auth = (() => {
     isLoggedIn, getUser,
     login, register, logout,
     submitScore, fetchLeaderboard, renderLeaderboard,
+    refreshLeaderboard,
     init
   };
 })();

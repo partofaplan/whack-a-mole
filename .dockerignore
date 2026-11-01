@@ -1,0 +1,5 @@
+api/node_modules
+.git
+.agents
+.kiro
+*.md

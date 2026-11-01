@@ -149,8 +149,11 @@
     $('status').textContent = `Round over. Your score is ${score}. Personal best ${best}.`;
     $('play').focus(); tone(320, .3);
     // Submit score and refresh leaderboard
-    if (window.Auth && window.Auth.isLoggedIn()) { window.Auth.submitScore(score, difficulty); }
-    if (window.Auth) { window.Auth.fetchLeaderboard(window.Auth._currentFilter).then(d => { if (d && d.ok) window.Auth.renderLeaderboard(d.leaderboard); }); }
+    if (window.Auth && window.Auth.isLoggedIn()) {
+      window.Auth.submitScore(score, difficulty).finally(() => { if (window.Auth) window.Auth.refreshLeaderboard(); });
+    } else if (window.Auth) {
+      window.Auth.refreshLeaderboard();
+    }
   }
   function start() {
     clearTimeout(spawnTimer); clearInterval(clockTimer); holes.forEach(hide);
