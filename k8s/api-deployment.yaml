@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whackamoleapi
+  namespace: whack-a-mole
+  labels:
+    app: whackamoleapi
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: whackamoleapi
+  template:
+    metadata:
+      labels:
+        app: whackamoleapi
+    spec:
+      containers:
+        - name: whackamoleapi
+          image: whackamoleapi:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: whackamoleapi-jwt-secret
+                  key: secret
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: whackamoleapi-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whackamoleapi
+  namespace: whack-a-mole
+  labels:
+    app: whackamoleapi
+spec:
+  type: ClusterIP
+  selector:
+    app: whackamoleapi
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
